@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.novax.mapper.SpotConfigEntityMapper">
+  <resultMap id="BaseResultMap" type="com.novax.entity.mysql.SpotConfigEntity">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="tenant_id" jdbcType="BIGINT" property="tenantId" />
+    <result column="symbol" jdbcType="VARCHAR" property="symbol" />
+    <result column="base_currency" jdbcType="VARCHAR" property="baseCurrency" />
+    <result column="quote_currency" jdbcType="VARCHAR" property="quoteCurrency" />
+    <result column="price_tick" jdbcType="DECIMAL" property="priceTick" />
+    <result column="size_tick" jdbcType="DECIMAL" property="sizeTick" />
+    <result column="sell_min" jdbcType="DECIMAL" property="sellMin" />
+    <result column="sell_max" jdbcType="DECIMAL" property="sellMax" />
+    <result column="buy_min" jdbcType="DECIMAL" property="buyMin" />
+    <result column="buy_min_price" jdbcType="DECIMAL" property="buyMinPrice" />
+    <result column="trade_min" jdbcType="DECIMAL" property="tradeMin" />
+    <result column="trade_max" jdbcType="DECIMAL" property="tradeMax" />
+    <result column="rise" jdbcType="DECIMAL" property="rise" />
+    <result column="fall" jdbcType="DECIMAL" property="fall" />
+    <result column="market_ratio_buy" jdbcType="DECIMAL" property="marketRatioBuy" />
+    <result column="market_ratio_sell" jdbcType="DECIMAL" property="marketRatioSell" />
+    <result column="max_number" jdbcType="DECIMAL" property="maxNumber" />
+    <result column="rate" jdbcType="DECIMAL" property="rate" />
+    <result column="recommend" jdbcType="INTEGER" property="recommend" />
+    <result column="recommend_start_time" jdbcType="TIMESTAMP" property="recommendStartTime" />
+    <result column="recommend_end_time" jdbcType="TIMESTAMP" property="recommendEndTime" />
+    <result column="innovate" jdbcType="INTEGER" property="innovate" />
+    <result column="invit" jdbcType="VARCHAR" property="invit" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="is_fee" jdbcType="INTEGER" property="isFee" />
+    <result column="trade_type" jdbcType="INTEGER" property="tradeType" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="is_show" jdbcType="INTEGER" property="isShow" />
+    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+    <result column="open_time" jdbcType="TIMESTAMP" property="openTime" />
+    <result column="is_grid_opened" jdbcType="INTEGER" property="isGridOpened" />
+    <result column="grid_state" jdbcType="INTEGER" property="gridState" />
+    <result column="creator" jdbcType="BIGINT" property="creator" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="updater" jdbcType="BIGINT" property="updater" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="tendency" jdbcType="LONGVARCHAR" property="tendency" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, tenant_id, symbol, base_currency, quote_currency, price_tick, size_tick,
+    sell_min, sell_max, buy_min, buy_min_price, trade_min, trade_max, rise, fall, market_ratio_buy,
+    market_ratio_sell, max_number, rate, recommend, recommend_start_time, recommend_end_time,
+    innovate, invit, sort, is_fee, trade_type, status, is_show, is_deleted, open_time,
+    is_grid_opened, grid_state, creator, create_time, updater, update_time, tendency
+  </sql>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from spot_config
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.novax.entity.mysql.SpotConfigEntity">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into spot_config (tenant_id, symbol, base_currency, 
+      quote_currency, price_tick, size_tick, 
+      sell_min, sell_max, buy_min, 
+      buy_min_price, trade_min, trade_max, 
+      rise, fall, market_ratio_buy, 
+      market_ratio_sell, max_number, rate, 
+      recommend, recommend_start_time, recommend_end_time, 
+      innovate, invit, sort, 
+      is_fee, trade_type, status, 
+      is_show, is_deleted, open_time, 
+      is_grid_opened, grid_state, creator, 
+      create_time, updater, update_time, 
+      tendency)
+    values (#{tenantId,jdbcType=BIGINT}, #{symbol,jdbcType=VARCHAR}, #{baseCurrency,jdbcType=VARCHAR}, 
+      #{quoteCurrency,jdbcType=VARCHAR}, #{priceTick,jdbcType=DECIMAL}, #{sizeTick,jdbcType=DECIMAL}, 
+      #{sellMin,jdbcType=DECIMAL}, #{sellMax,jdbcType=DECIMAL}, #{buyMin,jdbcType=DECIMAL}, 
+      #{buyMinPrice,jdbcType=DECIMAL}, #{tradeMin,jdbcType=DECIMAL}, #{tradeMax,jdbcType=DECIMAL}, 
+      #{rise,jdbcType=DECIMAL}, #{fall,jdbcType=DECIMAL}, #{marketRatioBuy,jdbcType=DECIMAL}, 
+      #{marketRatioSell,jdbcType=DECIMAL}, #{maxNumber,jdbcType=DECIMAL}, #{rate,jdbcType=DECIMAL}, 
+      #{recommend,jdbcType=INTEGER}, #{recommendStartTime,jdbcType=TIMESTAMP}, #{recommendEndTime,jdbcType=TIMESTAMP}, 
+      #{innovate,jdbcType=INTEGER}, #{invit,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, 
+      #{isFee,jdbcType=INTEGER}, #{tradeType,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{isShow,jdbcType=INTEGER}, #{isDeleted,jdbcType=INTEGER}, #{openTime,jdbcType=TIMESTAMP}, 
+      #{isGridOpened,jdbcType=INTEGER}, #{gridState,jdbcType=INTEGER}, #{creator,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updater,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{tendency,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.novax.entity.mysql.SpotConfigEntity">
+    update spot_config
+    set tenant_id = #{tenantId,jdbcType=BIGINT},
+      symbol = #{symbol,jdbcType=VARCHAR},
+      base_currency = #{baseCurrency,jdbcType=VARCHAR},
+      quote_currency = #{quoteCurrency,jdbcType=VARCHAR},
+      price_tick = #{priceTick,jdbcType=DECIMAL},
+      size_tick = #{sizeTick,jdbcType=DECIMAL},
+      sell_min = #{sellMin,jdbcType=DECIMAL},
+      sell_max = #{sellMax,jdbcType=DECIMAL},
+      buy_min = #{buyMin,jdbcType=DECIMAL},
+      buy_min_price = #{buyMinPrice,jdbcType=DECIMAL},
+      trade_min = #{tradeMin,jdbcType=DECIMAL},
+      trade_max = #{tradeMax,jdbcType=DECIMAL},
+      rise = #{rise,jdbcType=DECIMAL},
+      fall = #{fall,jdbcType=DECIMAL},
+      market_ratio_buy = #{marketRatioBuy,jdbcType=DECIMAL},
+      market_ratio_sell = #{marketRatioSell,jdbcType=DECIMAL},
+      max_number = #{maxNumber,jdbcType=DECIMAL},
+      rate = #{rate,jdbcType=DECIMAL},
+      recommend = #{recommend,jdbcType=INTEGER},
+      recommend_start_time = #{recommendStartTime,jdbcType=TIMESTAMP},
+      recommend_end_time = #{recommendEndTime,jdbcType=TIMESTAMP},
+      innovate = #{innovate,jdbcType=INTEGER},
+      invit = #{invit,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      is_fee = #{isFee,jdbcType=INTEGER},
+      trade_type = #{tradeType,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      is_show = #{isShow,jdbcType=INTEGER},
+      is_deleted = #{isDeleted,jdbcType=INTEGER},
+      open_time = #{openTime,jdbcType=TIMESTAMP},
+      is_grid_opened = #{isGridOpened,jdbcType=INTEGER},
+      grid_state = #{gridState,jdbcType=INTEGER},
+      creator = #{creator,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      updater = #{updater,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      tendency = #{tendency,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, tenant_id, symbol, base_currency, quote_currency, price_tick, size_tick, 
+    sell_min, sell_max, buy_min, buy_min_price, trade_min, trade_max, rise, fall, market_ratio_buy, 
+    market_ratio_sell, max_number, rate, recommend, recommend_start_time, recommend_end_time, 
+    innovate, invit, sort, is_fee, trade_type, status, is_show, is_deleted, open_time, 
+    is_grid_opened, grid_state, creator, create_time, updater, update_time, tendency
+    from spot_config
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, tenant_id, symbol, base_currency, quote_currency, price_tick, size_tick, 
+    sell_min, sell_max, buy_min, buy_min_price, trade_min, trade_max, rise, fall, market_ratio_buy, 
+    market_ratio_sell, max_number, rate, recommend, recommend_start_time, recommend_end_time, 
+    innovate, invit, sort, is_fee, trade_type, status, is_show, is_deleted, open_time, 
+    is_grid_opened, grid_state, creator, create_time, updater, update_time, tendency
+    from spot_config
+  </select>
+  <select id="selectBySymbol" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from superex_trade.spot_config where symbol=#{symbol}
+  </select>
+</mapper>

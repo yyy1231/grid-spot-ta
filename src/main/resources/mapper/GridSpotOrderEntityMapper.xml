@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.novax.mapper.GridSpotOrderEntityMapper">
+    <resultMap id="BaseResultMap" type="com.novax.entity.mysql.GridSpotOrderEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="tenant_id" jdbcType="BIGINT" property="tenantId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="symbol" jdbcType="VARCHAR" property="symbol"/>
+        <result column="currency" jdbcType="VARCHAR" property="currency"/>
+        <result column="investment" jdbcType="DECIMAL" property="investment"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <select id="count" parameterType="com.novax.entity.condition.GridSpotOrderSelectEntity"
+            resultType="java.lang.Integer">
+        SELECT count(id)
+        FROM grid_spot_order
+        <trim prefix="where" suffixOverrides="and">
+            <if test="userId!= null">
+                user_id = #{userId} and
+            </if>
+            <if test="symbol != null">
+                symbol = #{symbol} and
+            </if>
+            <if test="isRunning == true">
+                status in (0, 1, 2) and
+            </if>
+            <if test="isRunning == false">
+                status in (3, 4) and
+            </if>
+            <if test="startTime != null">
+                create_time &gt;= #{startTime} and
+            </if>
+            <if test="endTime!= null">
+                create_time &lt;= #{endTime} and
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectByCondition" parameterType="com.novax.entity.condition.GridSpotOrderSelectEntity"
+            resultMap="BaseResultMap">
+        SELECT *
+        FROM grid_spot_order
+        <trim prefix="where" suffixOverrides="and">
+            <if test="userId!= null">
+                user_id = #{userId} and
+            </if>
+            <if test="symbol != null">
+                symbol = #{symbol} and
+            </if>
+            <if test="isRunning == true">
+                status in (0, 1, 2) and
+            </if>
+            <if test="isRunning == false">
+                status in (3, 4) and
+            </if>
+        </trim>
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from grid_spot_order
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.novax.entity.mysql.GridSpotOrderEntity">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into grid_spot_order (tenant_id, user_id, symbol,
+        currency, investment, status,
+        create_time, update_time)
+        values (#{tenantId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{symbol,jdbcType=VARCHAR},
+        #{currency,jdbcType=VARCHAR}, #{investment,jdbcType=DECIMAL}, #{status,jdbcType=TINYINT},
+        #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <update id="updateByPrimaryKey">
+        update grid_spot_order
+        set status = 4
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select id, tenant_id, user_id, symbol, currency, investment, status, create_time,
+        update_time
+        from grid_spot_order
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id, tenant_id, user_id, symbol, currency, investment, status, create_time,
+        update_time
+        from grid_spot_order
+    </select>
+    <select id="selectGridsOnRunning" resultMap="BaseResultMap">
+        select * from grid_spot_order
+        where user_id = #{userId,jdbcType=BIGINT}
+        and status in (0,1,2)
+    </select>
+    <select id="selectInvestment" resultType="java.math.BigDecimal">
+        select sum(investment)
+        from grid_spot_order
+        where id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+    <select id="selectAllGrids" resultType="com.novax.entity.mysql.GridSpotOrderEntity">
+        select * from grid_spot_order
+        where user_id = #{userId,jdbcType=BIGINT}
+        <if test="status!=null and status!=''">
+            and status = #{status}
+        </if>
+    </select>
+</mapper>

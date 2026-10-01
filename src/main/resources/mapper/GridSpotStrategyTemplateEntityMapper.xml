@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.novax.mapper.GridSpotStrategyTemplateEntityMapper">
+    <resultMap id="BaseResultMap" type="com.novax.entity.mysql.GridSpotStrategyTemplateEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="symbol" jdbcType="VARCHAR" property="symbol"/>
+        <result column="backtesting_period" jdbcType="SMALLINT" property="backtestingPeriod"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="enabled" jdbcType="TINYINT" property="enabled"/>
+        <result column="grid_type" jdbcType="TINYINT" property="gridType"/>
+        <result column="upper_limit_price" jdbcType="DECIMAL" property="upperLimitPrice"/>
+        <result column="lower_limit_price" jdbcType="DECIMAL" property="lowerLimitPrice"/>
+        <result column="grid_quantity" jdbcType="SMALLINT" property="gridQuantity"/>
+        <result column="min_profit_rate_per_grid" jdbcType="DECIMAL" property="minProfitRatePerGrid"/>
+        <result column="max_profit_rate_per_grid" jdbcType="DECIMAL" property="maxProfitRatePerGrid"/>
+        <result column="backtesting_profit_rate" jdbcType="DECIMAL" property="backtestingProfitRate"/>
+        <result column="actual_backtesting_profit_rate" jdbcType="DECIMAL" property="actualBacktestingProfitRate"/>
+        <result column="backtesting_apr" jdbcType="DECIMAL" property="backtestingApr"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <select id="selectBySymbol" resultMap="BaseResultMap">
+        SELECT * FROM grid_spot_strategy_template
+        <where>
+            symbol = #{symbol}
+            and
+            enabled=1
+            and
+            grid_type=0
+            order by backtesting_period ASC
+        </where>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from grid_spot_strategy_template
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.novax.entity.mysql.GridSpotStrategyTemplateEntity">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into grid_spot_strategy_template (symbol, backtesting_period, name,
+        description, enabled, grid_type,
+        upper_limit_price, lower_limit_price, grid_quantity,
+        min_profit_rate_per_grid, max_profit_rate_per_grid,
+        backtesting_profit_rate, backtesting_apr,
+        create_time, update_time)
+        values (#{symbol,jdbcType=VARCHAR}, #{backtestingPeriod,jdbcType=SMALLINT}, #{name,jdbcType=VARCHAR},
+        #{description,jdbcType=VARCHAR}, #{enabled,jdbcType=TINYINT}, #{gridType,jdbcType=TINYINT},
+        #{upperLimitPrice,jdbcType=DECIMAL}, #{lowerLimitPrice,jdbcType=DECIMAL}, #{gridQuantity,jdbcType=SMALLINT},
+        #{minProfitRatePerGrid,jdbcType=DECIMAL}, #{maxProfitRatePerGrid,jdbcType=DECIMAL},
+        #{backtestingProfitRate,jdbcType=DECIMAL}, #{backtestingApr,jdbcType=DECIMAL},
+        #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.novax.entity.mysql.GridSpotStrategyTemplateEntity">
+        update grid_spot_strategy_template
+        set symbol = #{symbol,jdbcType=VARCHAR},
+        backtesting_period = #{backtestingPeriod,jdbcType=SMALLINT},
+        name = #{name,jdbcType=VARCHAR},
+        description = #{description,jdbcType=VARCHAR},
+        enabled = #{enabled,jdbcType=TINYINT},
+        grid_type = #{gridType,jdbcType=TINYINT},
+        upper_limit_price = #{upperLimitPrice,jdbcType=DECIMAL},
+        lower_limit_price = #{lowerLimitPrice,jdbcType=DECIMAL},
+        grid_quantity = #{gridQuantity,jdbcType=SMALLINT},
+        min_profit_rate_per_grid = #{minProfitRatePerGrid,jdbcType=DECIMAL},
+        max_profit_rate_per_grid = #{maxProfitRatePerGrid,jdbcType=DECIMAL},
+        backtesting_profit_rate = #{backtestingProfitRate,jdbcType=DECIMAL},
+        backtesting_apr = #{backtestingApr,jdbcType=DECIMAL},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select id, symbol, backtesting_period, name, description, enabled, grid_type, upper_limit_price,
+        lower_limit_price, grid_quantity, min_profit_rate_per_grid, max_profit_rate_per_grid,
+        backtesting_profit_rate, backtesting_apr, create_time, update_time
+        from grid_spot_strategy_template
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id, symbol, backtesting_period, name, description, enabled, grid_type, upper_limit_price,
+        lower_limit_price, grid_quantity, min_profit_rate_per_grid, max_profit_rate_per_grid,
+        backtesting_profit_rate, backtesting_apr, create_time, update_time
+        from grid_spot_strategy_template
+    </select>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, symbol, backtesting_period, `name`, description, enabled, grid_type, upper_limit_price,
+        lower_limit_price, grid_quantity, min_profit_rate_per_grid, max_profit_rate_per_grid,
+        `backtesting_profit_rate`, `backtesting_apr`,
+        create_time, update_time
+    </sql>
+</mapper>

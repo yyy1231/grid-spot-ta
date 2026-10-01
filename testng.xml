@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="spot-grid">
+    <test verbose="2" name="grid-order">
+        <groups>
+            <run>
+                <include name="smokeTest"/>
+            </run>
+        </groups>
+        <classes>
+            <!--测试账号 spotGridAutoTest29775VVV@163.com 28678286/Aa123456-->
+
+            <!--恢复aisi/usdt盘口及最新价-->
+            <class name="com.novax.testcase.order.ClearAISIOrdersTest">
+                <methods>
+                    <include name="aisi_newPriceReady"/>
+                </methods>
+            </class>
+
+            <!--查询网格策略模板-->
+            <!--GET/v1/gridSpotStrategyTemplates-->
+            <class name="com.novax.testcase.order.QueryStrategyTemplatesTest">
+                <methods>
+                    <include name="queryStrategyTemplates_Success_Test"/>
+                </methods>
+            </class>
+            <!--创建现货网格-->
+            <!--POST/v1/gridSpotOrders-->
+            <class name="com.novax.testcase.order.CreateGridTest">
+                <methods>
+                    <include name="createGridSpotOrder_Success_Test"/>
+                    <include name="getAttributeNames_all_Test"/>
+                    <include name="getAttributeNames_autoStartUp_Test"/>
+                    <include name="getAttributeNames_clearData_Test"/>
+                </methods>
+            </class>
+            <!--查询网格下的事件记录列表-->
+            <!--GET/v1/gridSpotOrders/{orderId}/events-->
+            <class name="com.novax.testcase.order.QueryGridEventsTest"/>
+            <!--查询网格列表-->
+            <!--GET/v1/gridSpotOrders-->
+            <class name="com.novax.testcase.order.QueryGridListTest"/>
+            <!--修改现货网格-->
+            <!--PUT/v1/gridSpotOrders/{orderId}-->
+            <class name="com.novax.testcase.order.UpdateGridTest"/>
+            <!--启动网格-手动-->
+            <!--POST/v1/gridSpotOrders/{orderId}/startup-->
+            <!--放在调节市场价格前执行，避免被自动启动，导致查询网格事件时查不到手动启动事件-->
+            <class name="com.novax.testcase.order.StartupGridTest"/>
+
+
+            <!--弃用 推行情不稳定-->
+            <!--启动网格-自动-向上触发-->
+            <!--            <class name="com.novax.testcase.order.TriggerUpTest"/>-->
+            <!--启动网格-自动-向下触发-->
+            <!--            <class name="com.novax.testcase.order.TriggerDownTest"/>-->
+            <!--注意网格触发、上移参数设置-->
+            <!--启动网格向上触发价不可以>=网格第一次上移的价格，即网格上限+1*价差，否则，会引起上移订单网格形态提前上移，导致网格上移脚本的执行逻辑异常-->
+            <!--避免推行情用例之间相互影响，交易市场换成eth 2025/12/01-->
+            <!--网格上移-->
+            <!--            <class name="com.novax.testcase.order.TrailingUpGridTest"/>-->
+
+
+
+            <!--测试场景:网格触发、网格上移、网格止盈-->
+            <class name="com.novax.testcase.order.GridAdvancedParametersTest">
+                <methods>
+                    <include name="a_userReady"/>
+                    <!--                    <include name="b_newPriceReady"/>-->
+                    <include name="c_createGrid"/>
+                    <include name="d_spot_order_Test"/>
+                    <include name="e_spot_order_sell_Test"/>
+                    <include name="f_spot_order_buy_Test"/>
+                    <include name="g_spot_order2_Test"/>
+                    <include name="h_spot_order3_Test"/>
+                    <include name="i_spot_order4_Test"/>
+                </methods>
+            </class>
+
+            <!--查询网格详情-->
+            <!--GET/v1/gridSpotOrders/{orderId}-->
+            <class name="com.novax.testcase.order.QueryGridDetailTest"/>
+            <!--查询网格下委托-->
+            <!--GET/v1/gridSpotOrders/{orderId}/spotOrders-->
+            <class name="com.novax.testcase.order.QueryGridEntrustTest"/>
+            <!--查询网格下的成交记录列表-->
+            <!-- GET/v1/gridSpotOrders/{orderId}/transactions-->
+            <class name="com.novax.testcase.order.QueryGridTransactionsTest"/>
+
+            <!--查询用户网格订单余额-->
+            <!--GET/v1/gridSpotAssets/{gridSpotOrderId}-->
+            <class name="com.novax.testcase.assets.QueryGridAssetsBalanceTest"/>
+            <!--网格资产-币种详情列表-->
+            <!--GET/v1/gridSpotAssets/grid/desc-->
+            <class name="com.novax.testcase.assets.QueryGridAssetsCurrencyListTest"/>
+            <!--网格资产列表-->
+            <!--GET/v1/gridSpotAssets/grid/list-->
+            <class name="com.novax.testcase.assets.QueryGridAssetsListTest"/>
+            <!--按币种分类查询运行中的现货网格订单资产-->
+            <!--GET/v1/gridSpotAssets-->
+            <class name="com.novax.testcase.assets.QueryGridAssetsTest"/>
+            <!--网格总资产收益-->
+            <!--GET/v1/gridSpotAssets/total/grid-->
+            <class name="com.novax.testcase.assets.QueryGridTotalIncomeTest"/>
+
+            <!--网格终止-->
+            <!--POST/v1/gridSpotOrders/{orderId}/terminate-->
+            <!--注意止盈价设置，避免执行触发、上移脚本时被提前终止，订单状态已终止，会导致执行终止脚本时逻辑异常-->
+            <class name="com.novax.testcase.order.TerminateGridTest">
+                <methods>
+                    <include name="a_terminate_NotSell_Success_Test"/>
+                    <include name="b_terminate_Sell_Success_Test"/>
+                    <include name="terminate_ClearData_Test"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <listeners>
+        <!--实现的监听接口-->
+        <listener class-name="com.novax.util.AllureParamRenamer"/>
+        <listener class-name="com.novax.util.AllureTestNameListener"/>
+        <listener class-name="com.novax.util.RetryListener"/>
+    </listeners>
+</suite>

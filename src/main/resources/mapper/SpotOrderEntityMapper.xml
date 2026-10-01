@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.novax.mapper.SpotOrderEntityMapper">
+    <resultMap id="BaseResultMap" type="com.novax.entity.mysql.SpotOrderEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="tenant_id" jdbcType="BIGINT" property="tenantId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="order_type" jdbcType="INTEGER" property="orderType"/>
+        <result column="symbol" jdbcType="VARCHAR" property="symbol"/>
+        <result column="trade_type" jdbcType="INTEGER" property="tradeType"/>
+        <result column="price" jdbcType="DECIMAL" property="price"/>
+        <result column="order_number" jdbcType="DECIMAL" property="orderNumber"/>
+        <result column="trade_number" jdbcType="DECIMAL" property="tradeNumber"/>
+        <result column="total" jdbcType="DECIMAL" property="total"/>
+        <result column="trade_total" jdbcType="DECIMAL" property="tradeTotal"/>
+        <result column="order_price_type" jdbcType="INTEGER" property="orderPriceType"/>
+        <result column="is_stop_order" jdbcType="INTEGER" property="isStopOrder"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="grid_id" jdbcType="BIGINT" property="gridId"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from spot_order
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.novax.entity.mysql.SpotOrderEntity">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into spot_order (tenant_id, user_id, order_type,
+        symbol, trade_type, price,
+        order_number, trade_number, total,
+        trade_total, order_price_type, is_stop_order,
+        type, grid_id, status,
+        create_time, update_time)
+        values (#{tenantId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{orderType,jdbcType=INTEGER},
+        #{symbol,jdbcType=VARCHAR}, #{tradeType,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL},
+        #{orderNumber,jdbcType=DECIMAL}, #{tradeNumber,jdbcType=DECIMAL}, #{total,jdbcType=DECIMAL},
+        #{tradeTotal,jdbcType=DECIMAL}, #{orderPriceType,jdbcType=INTEGER}, #{isStopOrder,jdbcType=INTEGER},
+        #{type,jdbcType=INTEGER}, #{gridId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER},
+        #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.novax.entity.mysql.SpotOrderEntity">
+        update spot_order
+        set tenant_id = #{tenantId,jdbcType=BIGINT},
+        user_id = #{userId,jdbcType=BIGINT},
+        order_type = #{orderType,jdbcType=INTEGER},
+        symbol = #{symbol,jdbcType=VARCHAR},
+        trade_type = #{tradeType,jdbcType=INTEGER},
+        price = #{price,jdbcType=DECIMAL},
+        order_number = #{orderNumber,jdbcType=DECIMAL},
+        trade_number = #{tradeNumber,jdbcType=DECIMAL},
+        total = #{total,jdbcType=DECIMAL},
+        trade_total = #{tradeTotal,jdbcType=DECIMAL},
+        order_price_type = #{orderPriceType,jdbcType=INTEGER},
+        is_stop_order = #{isStopOrder,jdbcType=INTEGER},
+        type = #{type,jdbcType=INTEGER},
+        grid_id = #{gridId,jdbcType=BIGINT},
+        status = #{status,jdbcType=INTEGER},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select id, tenant_id, user_id, order_type, symbol, trade_type, price, order_number,
+        trade_number, total, trade_total, order_price_type, is_stop_order, type, grid_id,
+        status, create_time, update_time
+        from spot_order
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id, tenant_id, user_id, order_type, symbol, trade_type, price, order_number,
+        trade_number, total, trade_total, order_price_type, is_stop_order, type, grid_id,
+        status, create_time, update_time
+        from spot_order
+    </select>
+    <select id="selectInTradingOrders" resultMap="BaseResultMap">
+        SELECT * FROM superex_trade.spot_order
+        WHERE symbol=#{symbol,jdbcType=VARCHAR}
+        and status =1
+        and grid_id is null
+        ORDER BY create_time DESC
+    </select>
+    <select id="selectInTradingGridOrders" resultMap="BaseResultMap">
+        SELECT * FROM superex_trade.spot_order
+        WHERE status =1
+        <if test="symbol!=null and symbol!=''">
+            and symbol = #{symbol,jdbcType=VARCHAR}
+        </if>
+        <if test="gridId!=null and gridId!=''">
+            and grid_id = #{gridId,jdbcType=BIGINT}
+        </if>
+        <if test="tradeType!=null and tradeType!=''">
+            and trade_type = #{tradeType,jdbcType=BIGINT}
+        </if>
+        and grid_id is not null
+        ORDER BY create_time DESC
+    </select>
+    <select id="selectInitialOrders" resultMap="BaseResultMap">
+        SELECT * FROM superex_trade.spot_order
+        WHERE user_id = #{userId,jdbcType=BIGINT}
+        and grid_id = #{gridId,jdbcType=BIGINT}
+        and order_price_type =3
+        and trade_type = 1
+    </select>
+    <select id="selectInitialEntrust" resultMap="BaseResultMap">
+        SELECT * FROM superex_trade.spot_order
+        WHERE user_id = #{userId,jdbcType=BIGINT}
+        and grid_id = #{gridId,jdbcType=BIGINT}
+        and order_price_type =1
+        and trade_type = #{tradeType,jdbcType=INTEGER}
+        ORDER BY price ASC
+    </select>
+</mapper>

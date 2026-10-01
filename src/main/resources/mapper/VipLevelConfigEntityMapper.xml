@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.novax.mapper.VipLevelConfigEntityMapper">
+    <resultMap id="BaseResultMap" type="com.novax.entity.mysql.VipLevelConfigEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="level" jdbcType="INTEGER" property="level"/>
+        <result column="spot_btc" jdbcType="DECIMAL" property="spotBtc"/>
+        <result column="swap_btc" jdbcType="DECIMAL" property="swapBtc"/>
+        <result column="platform" jdbcType="DECIMAL" property="platform"/>
+        <result column="spot_maker" jdbcType="DECIMAL" property="spotMaker"/>
+        <result column="spot_taker" jdbcType="DECIMAL" property="spotTaker"/>
+        <result column="spot_maker_discount" jdbcType="DECIMAL" property="spotMakerDiscount"/>
+        <result column="spot_taker_discount" jdbcType="DECIMAL" property="spotTakerDiscount"/>
+        <result column="swap_front_maker" jdbcType="DECIMAL" property="swapFrontMaker"/>
+        <result column="swap_front_taker" jdbcType="DECIMAL" property="swapFrontTaker"/>
+        <result column="swap_front_maker_discount" jdbcType="DECIMAL" property="swapFrontMakerDiscount"/>
+        <result column="swap_front_taker_discount" jdbcType="DECIMAL" property="swapFrontTakerDiscount"/>
+        <result column="swap_reverse_maker" jdbcType="DECIMAL" property="swapReverseMaker"/>
+        <result column="swap_reverse_taker" jdbcType="DECIMAL" property="swapReverseTaker"/>
+        <result column="swap_reverse_maker_discount" jdbcType="DECIMAL" property="swapReverseMakerDiscount"/>
+        <result column="swap_reverse_taker_discount" jdbcType="DECIMAL" property="swapReverseTakerDiscount"/>
+        <result column="withdrawal_max" jdbcType="DECIMAL" property="withdrawalMax"/>
+        <result column="withdrawal_single_limit" jdbcType="DECIMAL" property="withdrawalSingleLimit"/>
+        <result column="withdrawal_currency" jdbcType="VARCHAR" property="withdrawalCurrency"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, `level`, spot_btc, swap_btc, platform, spot_maker, spot_taker, spot_maker_discount, spot_taker_discount,
+        swap_front_maker, swap_front_taker, swap_front_maker_discount, swap_front_taker_discount, swap_reverse_maker,
+        swap_reverse_taker, swap_reverse_maker_discount, swap_reverse_taker_discount, withdrawal_max, withdrawal_currency,
+        create_time, update_time
+    </sql>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from vip_level_config
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.novax.entity.mysql.VipLevelConfigEntity">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into vip_level_config (level, spot_btc, swap_btc,
+        platform, spot_maker, spot_taker,
+        spot_maker_discount, spot_taker_discount, swap_front_maker,
+        swap_front_taker, swap_front_maker_discount,
+        swap_front_taker_discount, swap_reverse_maker,
+        swap_reverse_taker, swap_reverse_maker_discount,
+        swap_reverse_taker_discount, withdrawal_max,
+        withdrawal_single_limit, withdrawal_currency,
+        create_time, update_time, status
+        )
+        values (#{level,jdbcType=INTEGER}, #{spotBtc,jdbcType=DECIMAL}, #{swapBtc,jdbcType=DECIMAL},
+        #{platform,jdbcType=DECIMAL}, #{spotMaker,jdbcType=DECIMAL}, #{spotTaker,jdbcType=DECIMAL},
+        #{spotMakerDiscount,jdbcType=DECIMAL}, #{spotTakerDiscount,jdbcType=DECIMAL},
+        #{swapFrontMaker,jdbcType=DECIMAL},
+        #{swapFrontTaker,jdbcType=DECIMAL}, #{swapFrontMakerDiscount,jdbcType=DECIMAL},
+        #{swapFrontTakerDiscount,jdbcType=DECIMAL}, #{swapReverseMaker,jdbcType=DECIMAL},
+        #{swapReverseTaker,jdbcType=DECIMAL}, #{swapReverseMakerDiscount,jdbcType=DECIMAL},
+        #{swapReverseTakerDiscount,jdbcType=DECIMAL}, #{withdrawalMax,jdbcType=DECIMAL},
+        #{withdrawalSingleLimit,jdbcType=DECIMAL}, #{withdrawalCurrency,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
+        )
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.novax.entity.mysql.VipLevelConfigEntity">
+        update vip_level_config
+        set level = #{level,jdbcType=INTEGER},
+        spot_btc = #{spotBtc,jdbcType=DECIMAL},
+        swap_btc = #{swapBtc,jdbcType=DECIMAL},
+        platform = #{platform,jdbcType=DECIMAL},
+        spot_maker = #{spotMaker,jdbcType=DECIMAL},
+        spot_taker = #{spotTaker,jdbcType=DECIMAL},
+        spot_maker_discount = #{spotMakerDiscount,jdbcType=DECIMAL},
+        spot_taker_discount = #{spotTakerDiscount,jdbcType=DECIMAL},
+        swap_front_maker = #{swapFrontMaker,jdbcType=DECIMAL},
+        swap_front_taker = #{swapFrontTaker,jdbcType=DECIMAL},
+        swap_front_maker_discount = #{swapFrontMakerDiscount,jdbcType=DECIMAL},
+        swap_front_taker_discount = #{swapFrontTakerDiscount,jdbcType=DECIMAL},
+        swap_reverse_maker = #{swapReverseMaker,jdbcType=DECIMAL},
+        swap_reverse_taker = #{swapReverseTaker,jdbcType=DECIMAL},
+        swap_reverse_maker_discount = #{swapReverseMakerDiscount,jdbcType=DECIMAL},
+        swap_reverse_taker_discount = #{swapReverseTakerDiscount,jdbcType=DECIMAL},
+        withdrawal_max = #{withdrawalMax,jdbcType=DECIMAL},
+        withdrawal_single_limit = #{withdrawalSingleLimit,jdbcType=DECIMAL},
+        withdrawal_currency = #{withdrawalCurrency,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        status = #{status,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select id, level, spot_btc, swap_btc, platform, spot_maker, spot_taker, spot_maker_discount,
+        spot_taker_discount, swap_front_maker, swap_front_taker, swap_front_maker_discount,
+        swap_front_taker_discount, swap_reverse_maker, swap_reverse_taker, swap_reverse_maker_discount,
+        swap_reverse_taker_discount, withdrawal_max, withdrawal_single_limit, withdrawal_currency,
+        create_time, update_time, status
+        from vip_level_config
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id, level, spot_btc, swap_btc, platform, spot_maker, spot_taker, spot_maker_discount,
+        spot_taker_discount, swap_front_maker, swap_front_taker, swap_front_maker_discount,
+        swap_front_taker_discount, swap_reverse_maker, swap_reverse_taker, swap_reverse_maker_discount,
+        swap_reverse_taker_discount, withdrawal_max, withdrawal_single_limit, withdrawal_currency,
+        create_time, update_time, status
+        from vip_level_config
+
+    </select>
+    <select id="selectConfigs" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from superex_trade.vip_level_config where status = 1
+        order by `level` asc
+    </select>
+</mapper>
